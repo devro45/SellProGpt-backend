@@ -12,6 +12,7 @@ const app = express();
 app.use(express.json());
 
 // const dbURI = process.env.DB_URI;
+const secret = process.env.JWT_SECRET;
 mongoose
   .connect(process.env.DB_URI)
   .then(() => {
@@ -33,7 +34,7 @@ app.use("/api", productRoute);
 app.use("/api", userRoute);
 app.use("/api", checkoutRoute);
 
-const port = 5000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Backend server is running at port ${port}`);
 });

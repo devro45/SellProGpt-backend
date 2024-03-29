@@ -2,8 +2,7 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const { expressjwt: expressJwt } = require("express-jwt");
-const config = require("config");
-
+require("dotenv").config();
 exports.signup = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -26,7 +25,7 @@ exports.signup = (req, res) => {
             const payload = { id: savedUser._id };
             jwt.sign(
               payload,
-              process.env.jwtscret,
+              `${process.env.JWT_SECRET}`,
               { expiresIn: 3600 },
               (err, token) => {
                 if (err) {
@@ -80,7 +79,7 @@ exports.signin = (req, res) => {
         });
       }
 
-      const token = jwt.sign({ id: user._id }, config.get("jwtsecret"));
+      const token = jwt.sign({ id: user._id }, `${process.env.JWT_SECRET}`);
       res.cookie("token", token, { expire: new Date() + 9999 });
 
       const { _id, name, email, role } = user;
@@ -102,7 +101,7 @@ exports.signout = (req, res) => {
 };
 
 exports.isSignedIn = expressJwt({
-  secret: process.env.jwtscret,
+  secret: process.env.JWT_SECRET,
   userProperty: "auth",
   algorithms: ["HS256"],
 });
