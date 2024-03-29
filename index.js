@@ -33,7 +33,7 @@ app.use("/api", productRoute);
 app.use("/api", userRoute);
 app.use("/api", checkoutRoute);
 
-const port = 5000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Backend server is running at port ${port}`);
 });
