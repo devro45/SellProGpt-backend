@@ -26,7 +26,7 @@ exports.signup = (req, res) => {
             const payload = { id: savedUser._id };
             jwt.sign(
               payload,
-              config.get("jwtsecret"),
+              process.env.jwtscret,
               { expiresIn: 3600 },
               (err, token) => {
                 if (err) {
@@ -102,7 +102,7 @@ exports.signout = (req, res) => {
 };
 
 exports.isSignedIn = expressJwt({
-  secret: config.get("jwtsecret"),
+  secret: process.env.jwtscret,
   userProperty: "auth",
   algorithms: ["HS256"],
 });
